@@ -222,13 +222,12 @@ void jogada_computador(char jog, int nivel) {
     printf("O computador escolheu a posicao %d.\n", posicao);
 }
 
+// Nivel basico: o computador escolhe uma casa vazia aleatoria.
 // Nivel intermediario: o computador tenta vencer, bloquear uma vitoria adversaria, 
 // ocupar o centro e escolher um canto.
-// Nivel basico: o computador escolhe aleatoriamente uma casa vazia.
 // Nivel avancado: a implementacao apresentada ainda e uma estraegia heuristica simples, 
 // semelhante a intermediaria; nao garante a melhor jogada em todas as situacoes.
 
-// Escolhe uma casa vazia aleatoria.
 int jogada_basica() {
     int casas[9];
     int quantidade = 0;
