@@ -222,7 +222,13 @@ void jogada_computador(char jog, int nivel) {
     printf("O computador escolheu a posicao %d.\n", posicao);
 }
 
-/* Escolhe uma casa vazia aleatoria. */
+// Nivel intermediario: o computador tenta vencer, bloquear uma vitoria adversaria, 
+// ocupar o centro e escolher um canto.
+// Nivel basico: o computador escolhe aleatoriamente uma casa vazia.
+// Nivel avancado: a implementacao apresentada ainda e uma estraegia heuristica simples, 
+// semelhante a intermediaria; nao garante a melhor jogada em todas as situacoes.
+
+// Escolhe uma casa vazia aleatoria.
 int jogada_basica() {
     int casas[9];
     int quantidade = 0;
@@ -276,37 +282,6 @@ int jogada_intermediaria(char jog) {
     return jogada_basica();
 }
 
-int encontra_dupla_vitoria(char jog) {
-    int i, j;
-    int lin, col;
-    int possibilidadesVitoria;
-
-    for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
-            if (velha[i][j] == ' ') {
-                velha[i][j] = jog;
-                possibilidadesVitoria = 0;
-
-                for (lin = 0; lin < 3; lin++) {
-                    for (col = 0; col < 3; col++) {
-                        if (velha[lin][col] == ' ') {
-                            velha[lin][col] = jog;
-
-                            if (verifica_ganhador(jog)) possibilidadesVitoria++;
-
-                            velha[lin][col] = ' ';
-                        }
-                    }
-                }
-                velha[i][j] = ' ';
-                if (possibilidadesVitoria >= 2) return i * 3 + j + 1;
-            }
-        }
-    }
-
-    return 0;
-}
-
 int jogada_avancada(char jog) {
     int posicao;
     int i;
@@ -348,6 +323,37 @@ int jogada_avancada(char jog) {
     }
 
     return jogada_basica();
+}
+
+int encontra_dupla_vitoria(char jog) {
+    int i, j;
+    int lin, col;
+    int possibilidadesVitoria;
+
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 3; j++) {
+            if (velha[i][j] == ' ') {
+                velha[i][j] = jog;
+                possibilidadesVitoria = 0;
+
+                for (lin = 0; lin < 3; lin++) {
+                    for (col = 0; col < 3; col++) {
+                        if (velha[lin][col] == ' ') {
+                            velha[lin][col] = jog;
+
+                            if (verifica_ganhador(jog)) possibilidadesVitoria++;
+
+                            velha[lin][col] = ' ';
+                        }
+                    }
+                }
+                velha[i][j] = ' ';
+                if (possibilidadesVitoria >= 2) return i * 3 + j + 1;
+            }
+        }
+    }
+
+    return 0;
 }
 
 void joga_partida(int opcao, char jog1, char jog2) {
