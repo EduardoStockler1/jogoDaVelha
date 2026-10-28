@@ -10,6 +10,7 @@ char **dicas;
 int quantidadePalavras;
 
 int menu();
+void liberar_memoria();
 int le_inteiro();
 void cadastra_palavras();
 void joga_partida();
@@ -34,8 +35,20 @@ int main() {
             printf("Saindo do jogo...\n");
         }
     } while (opcao != 2);
-
+    liberar_memoria();
     return 0;
+}
+
+void liberar_memoria() {
+    int i;
+
+    for (i = 0; i < quantidadePalavras; i++) {
+        free(palavras[i]);
+        free(dicas[i]);
+    }
+
+    free(palavras);
+    free(dicas);
 }
 
 int le_inteiro() {
@@ -95,6 +108,8 @@ void cadastra_palavras() {
     dicas = malloc(quantidadePalavras * sizeof(*dicas));
 
     if (palavras == NULL || dicas == NULL) {
+        free(palavras);
+        free(dicas);
         printf("Erro ao alocar memoria.\n");
         exit(1);
     }
@@ -104,6 +119,19 @@ void cadastra_palavras() {
         dicas[i] = malloc(200 * sizeof(char));
 
         if (palavras[i] == NULL || dicas[i] == NULL) {
+            int j;
+        
+            free(palavras[i]);
+            free(dicas[i]);
+        
+            for (j = 0; j < i; j++) {
+                free(palavras[j]);
+                free(dicas[j]);
+            }
+        
+            free(palavras);
+            free(dicas);
+        
             printf("Erro ao alocar memoria.\n");
             exit(1);
         }
